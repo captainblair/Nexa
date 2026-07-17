@@ -36,6 +36,16 @@ yarn-error.log*
 # vercel
 .vercel
 
+# scratch / duplicates (assets live in public/)
+nexa-temp/
+tmp-wiki.json
+/Ustawilive.png
+/travionalive.png
+/school1.png
+/this.png
+/logo.png
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+node_modules
