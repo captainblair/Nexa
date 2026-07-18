@@ -41,6 +41,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
+      <head>
+        <link
+          rel="preload"
+          href="/videos/nairobi-hero.mp4"
+          as="fetch"
+          type="video/mp4"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-full w-full overflow-x-clip bg-paper text-ink">
         <Navigation />
         <Providers>

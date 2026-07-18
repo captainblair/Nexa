@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useReducedMotion,
@@ -10,9 +10,12 @@ import {
 import { heroVideo } from "@/lib/data/content";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import { siteConfig } from "@/lib/data/site";
+import { cn } from "@/lib/utils";
 
 export function OpeningFilm() {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const isMobile = useIsMobile();
 
@@ -25,6 +28,25 @@ export function OpeningFilm() {
   const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 80]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.85], [0.45, 0.72]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onReady = () => setVideoReady(true);
+
+    if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+      onReady();
+    }
+
+    video.addEventListener("canplay", onReady);
+    video.addEventListener("loadeddata", onReady);
+
+    return () => {
+      video.removeEventListener("canplay", onReady);
+      video.removeEventListener("loadeddata", onReady);
+    };
+  }, []);
 
   return (
     <section
@@ -40,13 +62,16 @@ export function OpeningFilm() {
         aria-hidden="true"
       >
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
-          poster={heroVideo.poster}
-          className="h-full w-full object-cover"
+          className={cn(
+            "h-full w-full object-cover transition-opacity duration-1000 ease-out",
+            videoReady ? "opacity-100" : "opacity-0",
+          )}
         >
           <source src={heroVideo.src} type="video/mp4" />
         </video>
