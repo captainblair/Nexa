@@ -44,9 +44,18 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
+          href="/videos/nairobi-hero-mobile.mp4"
+          as="fetch"
+          type="video/mp4"
+          media="(max-width: 767px)"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
           href="/videos/nairobi-hero.mp4"
           as="fetch"
           type="video/mp4"
+          media="(min-width: 768px)"
           crossOrigin="anonymous"
         />
       </head>

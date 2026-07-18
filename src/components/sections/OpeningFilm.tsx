@@ -73,7 +73,16 @@ export function OpeningFilm() {
             videoReady ? "opacity-100" : "opacity-0",
           )}
         >
-          <source src={heroVideo.src} type="video/mp4" />
+          <source
+            src={heroVideo.mobileSrc}
+            type="video/mp4"
+            media="(max-width: 767px)"
+          />
+          <source
+            src={heroVideo.src}
+            type="video/mp4"
+            media="(min-width: 768px)"
+          />
         </video>
       </motion.div>
 
