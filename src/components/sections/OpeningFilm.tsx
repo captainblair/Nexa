@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
@@ -33,7 +34,10 @@ export function OpeningFilm() {
     const video = videoRef.current;
     if (!video) return;
 
-    const onReady = () => setVideoReady(true);
+    const onReady = () => {
+      setVideoReady(true);
+      void video.play();
+    };
 
     if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
       onReady();
@@ -61,6 +65,14 @@ export function OpeningFilm() {
         className="absolute inset-0"
         aria-hidden="true"
       >
+        <Image
+          src={heroVideo.poster}
+          alt=""
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
         <video
           ref={videoRef}
           autoPlay
@@ -68,8 +80,9 @@ export function OpeningFilm() {
           loop
           playsInline
           preload="auto"
+          poster={heroVideo.poster}
           className={cn(
-            "h-full w-full object-cover transition-opacity duration-1000 ease-out",
+            "absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-out",
             videoReady ? "opacity-100" : "opacity-0",
           )}
         >

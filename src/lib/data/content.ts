@@ -1,5 +1,6 @@
 export const heroVideo = {
   src: "/videos/nairobi-hero.mp4",
+  poster: "/images/nairobi-county-skyline.jpg",
 } as const;
 
 export type PortfolioProject = {

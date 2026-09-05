@@ -19,7 +19,7 @@ export function Navigation() {
   const lastScrollY = useRef(0);
   const prefersReducedMotion = useReducedMotion();
 
-  const onLight = navTheme === "light";
+  const onLight = navTheme === "light" && !menuOpen;
   const compact = !atTop || isMobile;
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export function Navigation() {
 
   const linkClass = cn(
     "studio-nav-link transition-opacity hover:opacity-60",
-    onLight || menuOpen ? "text-ink" : "text-white",
+    onLight ? "text-ink" : "text-white",
   );
 
   return (
@@ -91,11 +91,13 @@ export function Navigation() {
         className={cn(
           "fixed top-0 left-0 z-50 w-full max-w-full transition-[transform,background-color,padding] duration-300",
           navHidden && !menuOpen && !isMobile && "-translate-y-full",
-          onLight || menuOpen
+          onLight
             ? "border-b border-ink/10 bg-paper/95 backdrop-blur-md"
-            : atTop
-              ? "bg-transparent"
-              : "bg-charcoal/90 backdrop-blur-md",
+            : menuOpen
+              ? "bg-charcoal"
+              : atTop
+                ? "bg-transparent"
+                : "bg-charcoal/90 backdrop-blur-md",
           compact ? "py-3" : "py-6 md:py-8",
         )}
       >
@@ -108,7 +110,7 @@ export function Navigation() {
             onClick={() => setMenuOpen(false)}
             className={cn(
               "shrink-0 transition-opacity hover:opacity-80",
-              onLight || menuOpen ? "brightness-0" : "",
+              onLight ? "brightness-0" : "",
             )}
             aria-label={siteConfig.name}
           >
@@ -138,7 +140,7 @@ export function Navigation() {
             onClick={() => setMenuOpen((open) => !open)}
             className={cn(
               "studio-nav-link shrink-0 md:hidden",
-              onLight || menuOpen ? "text-ink" : "text-white",
+              onLight ? "text-ink" : "text-white",
             )}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
@@ -161,26 +163,32 @@ export function Navigation() {
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-0 z-40 flex flex-col justify-end bg-paper px-6 pb-16 pt-28 md:hidden"
+          className="fixed inset-0 z-40 flex flex-col bg-charcoal px-6 pt-28 pb-[max(2rem,env(safe-area-inset-bottom))] md:hidden"
         >
-          <ul className="space-y-8">
+          <ul className="flex flex-1 flex-col justify-center gap-1">
             {siteConfig.nav.map((item, index) => (
               <motion.li
                 key={item.href}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                transition={{ delay: index * 0.06 }}
               >
                 <a
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className="editorial-pillar text-4xl text-ink"
+                  className="flex min-h-14 items-center text-2xl font-light uppercase tracking-[0.18em] text-white"
                 >
                   {item.label}
                 </a>
               </motion.li>
             ))}
           </ul>
+          <a
+            href={`mailto:${siteConfig.company.email}`}
+            className="studio-nav-link pb-4 text-white/45"
+          >
+            {siteConfig.company.email}
+          </a>
         </div>
       )}
     </>

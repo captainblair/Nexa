@@ -42,13 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <head>
-        <link
-          rel="preload"
-          href="/videos/nairobi-hero.mp4"
-          as="fetch"
-          type="video/mp4"
-          crossOrigin="anonymous"
-        />
+        <link rel="preload" href="/images/nairobi-county-skyline.jpg" as="image" />
       </head>
       <body className="min-h-full w-full overflow-x-clip bg-paper text-ink">
         <Navigation />
